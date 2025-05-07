@@ -12,7 +12,7 @@ type Props = { movie: Movie };
 export default function MovieSeatLayout({ movie }: Props) {
   const storageKey = `selectedSeats_${movie.title}`;
 
-  
+
   const [selectedSeats, setSelectedSeats] = useState<string[]>(() => {
       const saved = localStorage.getItem(storageKey);
       return saved ? JSON.parse(saved).seats : [];
