@@ -35,17 +35,25 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    const url =
-      `https://${domain}.auth.${region}.amazoncognito.com/oauth2/authorize` +
-      `?identity_provider=Google` +
-      `&redirect_uri=${redirectUri}` +
-      `&response_type=code` +
-      `&client_id=${clientId}` +
-      `&scope=openid%20email%20profile`;
+  // const handleGoogleLogin = () => {
+  //   const url =
+  //     `https://${domain}.auth.${region}.amazoncognito.com/oauth2/authorize` +
+  //     `?identity_provider=Google` +
+  //     `&redirect_uri=${redirectUri}` +
+  //     `&response_type=code` +
+  //     `&client_id=${clientId}` +
+  //     `&scope=openid%20email%20profile`;
 
-    window.location.href = url;
-  };
+  //   window.location.href = url;
+  // };
+  const buildHostedUIUrl = (provider: string) =>
+    `https://${domain}.auth.${region}.amazoncognito.com/oauth2/authorize` +
+    `?identity_provider=${provider}` +
+    `&redirect_uri=${redirectUri}` +
+    `&response_type=code` +
+    `&client_id=${clientId}` +
+    `&scope=openid%20email%20profile` +
+    `&prompt=select_account`;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#ECF0F1]">
@@ -79,10 +87,18 @@ export default function LoginPage() {
           </Link>
           <button
             type="button"
-            onClick={handleGoogleLogin}
-            className="block w-full mt-6 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+            onClick={() => window.location.href = buildHostedUIUrl('Google')}
+            className="block w-full mt-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
           >
             Sign in with Google
+          </button>
+
+          <button
+            type="button"
+            onClick={() => window.location.href = buildHostedUIUrl('Microsoft')}
+            className="block w-full mt-2 py-2 bg-blue-700 text-white rounded hover:bg-blue-800"
+          >
+            Sign in with Microsoft
           </button>
         </div>
       </form>
