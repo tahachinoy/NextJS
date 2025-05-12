@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { confirmSignUp } from '@/lib/cognito';
 import { useRouter } from 'next/navigation';
 
 export default function ConfirmPage() {
@@ -13,14 +12,16 @@ export default function ConfirmPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      setError('');
-      await confirmSignUp(username.trim(), code.trim());
-      setMsg('✅ Your account has been confirmed! You can now log in.');
-      router.push("/");
-    } catch (err: any) {
-      setMsg('');
-      setError(err.message || 'Failed to confirm account');
+    const res = await fetch('/api/auth/confirm', {
+      method: 'POST',
+      body: JSON.stringify({ username: username, code: code }),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const data = await res.json();
+    if (res.ok) {
+      router.push('/');
+    } else {
+      setError(data.error);
     }
   };
 
