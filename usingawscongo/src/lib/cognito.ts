@@ -21,7 +21,7 @@ export const cognitoClient = new CognitoIdentityProviderClient({
 //     : "http://localhost:3000/callback"; // For local development
 // };
 
-function getRedirectUri() {
+export function getRedirectUri() {
   if (process.env.NODE_ENV === "production") {
     // In production, use the Vercel URL
     return `https://${process.env.VERCEL_URL}/callback`;
