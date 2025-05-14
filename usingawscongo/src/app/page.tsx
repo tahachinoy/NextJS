@@ -97,7 +97,7 @@
 
 
 'use client';
-import { useEffect, useState } from "react";
+import {useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getRedirectUri } from "@/lib/cognito";
