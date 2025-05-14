@@ -100,6 +100,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getRedirectUri } from "@/lib/cognito";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -110,7 +111,7 @@ export default function LoginPage() {
   const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;
   const region = process.env.NEXT_PUBLIC_COGNITO_REGION!;
   const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
-  const redirectUri = encodeURIComponent("http://localhost:3000/callback");
+  const redirectUri = encodeURIComponent(getRedirectUri());
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
