@@ -196,13 +196,6 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
-
-      <div className="text-sm text-red-600 break-words mt-2">
-  <p>NODE_ENV: {process.env.NODE_ENV}</p>
-  <p>Redirect URI: {getRedirectUri()}</p>
-</div>
-
-
     </div>
 
     
