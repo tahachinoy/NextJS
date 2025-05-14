@@ -97,7 +97,7 @@
 
 
 'use client';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getRedirectUri } from "@/lib/cognito";
@@ -111,8 +111,10 @@ export default function LoginPage() {
   const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;
   const region = process.env.NEXT_PUBLIC_COGNITO_REGION!;
   const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
-  const redirectUri = encodeURIComponent(getRedirectUri());
 
+  
+  const redirectUri = encodeURIComponent(getRedirectUri());
+  
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -135,8 +137,9 @@ export default function LoginPage() {
     }
   };
 
-  console.log("redirect ", redirectUri)  
+  
   const buildHostedUIUrl = (provider: string) =>
+    
     `https://${domain}.auth.${region}.amazoncognito.com/oauth2/authorize` +
     `?identity_provider=${provider}` +
     `&redirect_uri=${redirectUri}` +
@@ -144,6 +147,7 @@ export default function LoginPage() {
     `&client_id=${clientId}` +
     `&scope=openid%20email%20profile` +
     `&prompt=select_account`;
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#ECF0F1]">
@@ -192,6 +196,15 @@ export default function LoginPage() {
           </button>
         </div>
       </form>
+
+      <div className="text-sm text-red-600 break-words mt-2">
+  <p>NODE_ENV: {process.env.NODE_ENV}</p>
+  <p>Redirect URI: {getRedirectUri()}</p>
+</div>
+
+
     </div>
+
+    
   );
 }
