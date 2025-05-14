@@ -15,11 +15,22 @@ export const cognitoClient = new CognitoIdentityProviderClient({
   region: REGION,
 });
 
-const getRedirectUri = () => {
-  return process.env.NODE_ENV === 'production'
-    ? `https://${process.env.VERCEL_URL}/callback` // For production (Vercel)
-    : "http://localhost:3000/callback"; // For local development
-};
+// const getRedirectUri = () => {
+//   return process.env.NODE_ENV === 'production'
+//     ? `https://${process.env.VERCEL_URL}/callback` // For production (Vercel)
+//     : "http://localhost:3000/callback"; // For local development
+// };
+
+function getRedirectUri() {
+  if (process.env.NODE_ENV === "production") {
+    // In production, use the Vercel URL
+    return `https://${process.env.VERCEL_URL}/callback`;
+  } else {
+    // In development, use localhost
+    return "http://localhost:3000/callback";
+  }
+}
+
 
 export async function signUp(username: string, password: string, email: string) {
   const cmd = new SignUpCommand({
