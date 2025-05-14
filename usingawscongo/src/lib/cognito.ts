@@ -15,6 +15,11 @@ export const cognitoClient = new CognitoIdentityProviderClient({
   region: REGION,
 });
 
+const getRedirectUri = () => {
+  return process.env.NODE_ENV === 'production'
+    ? `https://${process.env.VERCEL_URL}/callback` // For production (Vercel)
+    : "http://localhost:3000/callback"; // For local development
+};
 
 export async function signUp(username: string, password: string, email: string) {
   const cmd = new SignUpCommand({
@@ -74,7 +79,9 @@ export async function signOut(accessToken: string) {
 }
 
 export async function exchangeAuthCode(code: string) {
-  const redirectUri = "http://localhost:3000/callback";
+  // const redirectUri = "http://localhost:3000/callback";
+
+  const redirectUri = getRedirectUri(); 
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     client_id: CLIENT_ID,
