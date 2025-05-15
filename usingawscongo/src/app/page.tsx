@@ -1,7 +1,8 @@
 // 'use client';
-// import { useState } from "react";
+// import {useState } from "react";
 // import { useRouter } from "next/navigation";
 // import Link from "next/link";
+
 
 // export default function LoginPage() {
 //   const [email, setEmail] = useState("");
@@ -12,9 +13,12 @@
 //   const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;
 //   const region = process.env.NEXT_PUBLIC_COGNITO_REGION!;
 //   const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
-//   const redirectUri = encodeURIComponent("http://localhost:3000/callback");
 
-//   const handleLogin = async (e: React.FormEvent) => {
+  
+ 
+//   const redirectUri = encodeURIComponent(process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!);
+  
+//   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 //     e.preventDefault();
 
 //     try {
@@ -30,12 +34,15 @@
 //         const data = await res.json();
 //         setMsg(data.error || 'Login failed');
 //       }
-//     } catch (err: any) {
-//       setMsg(`❌ ${err.message}`);
+//     } catch (err: unknown) {
+//       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+//       setMsg(`❌ ${errorMessage}`);
 //     }
 //   };
 
+  
 //   const buildHostedUIUrl = (provider: string) =>
+    
 //     `https://${domain}.auth.${region}.amazoncognito.com/oauth2/authorize` +
 //     `?identity_provider=${provider}` +
 //     `&redirect_uri=${redirectUri}` +
@@ -43,6 +50,7 @@
 //     `&client_id=${clientId}` +
 //     `&scope=openid%20email%20profile` +
 //     `&prompt=select_account`;
+
 
 //   return (
 //     <div className="min-h-screen flex items-center justify-center bg-[#ECF0F1]">
@@ -92,15 +100,15 @@
 //         </div>
 //       </form>
 //     </div>
+
+    
 //   );
 // }
 
-
 'use client';
-import {useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-// import { getRedirectUri } from "@/lib/cognito";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -111,11 +119,13 @@ export default function LoginPage() {
   const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;
   const region = process.env.NEXT_PUBLIC_COGNITO_REGION!;
   const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
-
-  
-  // const redirectUri = encodeURIComponent(getRedirectUri());
   const redirectUri = encodeURIComponent(process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!);
-  
+
+  if (!domain || !region || !clientId || !redirectUri) {
+    console.error("Missing required environment variables for Cognito");
+    setMsg("❌ Configuration error. Please contact support.");
+  }
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -138,17 +148,20 @@ export default function LoginPage() {
     }
   };
 
-  
-  const buildHostedUIUrl = (provider: string) =>
-    
-    `https://${domain}.auth.${region}.amazoncognito.com/oauth2/authorize` +
-    `?identity_provider=${provider}` +
-    `&redirect_uri=${redirectUri}` +
-    `&response_type=code` +
-    `&client_id=${clientId}` +
-    `&scope=openid%20email%20profile` +
-    `&prompt=select_account`;
-
+  const buildHostedUIUrl = (provider: string) => {
+    if (!redirectUri) {
+      throw new Error("Redirect URI is not defined");
+    }
+    return (
+      `https://${domain}.auth.${region}.amazoncognito.com/oauth2/authorize` +
+      `?identity_provider=${provider}` +
+      `&redirect_uri=${redirectUri}` +
+      `&response_type=code` +
+      `&client_id=${clientId}` +
+      `&scope=openid%20email%20profile` +
+      `&prompt=select_account`
+    );
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#ECF0F1]">
@@ -187,7 +200,6 @@ export default function LoginPage() {
           >
             Sign in with Google
           </button>
-
           <button
             type="button"
             onClick={() => window.location.href = buildHostedUIUrl('Microsoft')}
@@ -198,7 +210,5 @@ export default function LoginPage() {
         </div>
       </form>
     </div>
-
-    
   );
 }
