@@ -79,7 +79,8 @@ export async function GET() {
   // ? `https://https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/`  // Vercel domain for production
   // : "http://localhost:3000/"; 
 
-  const redirectUri ="https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/"
+  const redirectUri = process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!;
+
 
 
   if (!token) {

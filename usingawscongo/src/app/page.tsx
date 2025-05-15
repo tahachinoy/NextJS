@@ -114,7 +114,7 @@ export default function LoginPage() {
 
   
   // const redirectUri = encodeURIComponent(getRedirectUri());
-  const redirectUri = encodeURIComponent("https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/callback");
+  const redirectUri = encodeURIComponent(process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!);
   
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

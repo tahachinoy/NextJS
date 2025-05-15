@@ -93,7 +93,8 @@ export async function exchangeAuthCode(code: string) {
   // const redirectUri = "http://localhost:3000/callback";
 
   // const redirectUri = getRedirectUri();
-  const redirectUri = "https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/callback"; 
+  // const redirectUri = "https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/callback"; 
+  const redirectUri = process.env.NEXT_PUBLIC_COGNITO_REDIRECT_URI!;
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     client_id: CLIENT_ID,

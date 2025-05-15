@@ -31,6 +31,5 @@ export default function CallbackHandler() {
     exchangeCode();
   }, [router, searchParams]);
 
-  // ✅ Return something valid — even just null
   return null;
 }
