@@ -1,14 +1,11 @@
-
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function CallbackHandler() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [status, setStatus] = useState<'loading' | 'error' | 'done'>('loading');
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     const code = searchParams.get("code");
@@ -18,36 +15,23 @@ export default function CallbackHandler() {
     }
 
     const exchangeCode = async () => {
-      setStatus('loading');
       try {
-        const res = await fetch(
-          `/api/auth/callback?code=${encodeURIComponent(code)}`
-        );
+        const res = await fetch(`/api/auth/callback?code=${code}`);
         if (res.ok) {
-          setStatus('done');
           router.replace("/welcome");
         } else {
-          const data = await res.json();
-          setErrorMsg(data.error || 'Authentication failed');
-          setStatus('error');
+          router.replace("/");
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error("OAuth error:", err);
-        setErrorMsg(err.message || 'Network error');
-        setStatus('error');
+        router.replace("/");
       }
     };
 
     exchangeCode();
   }, [router, searchParams]);
 
-  if (status === 'loading') {
-    return <div>Loading authentication...</div>;
-  }
-
-  if (status === 'error') {
-    return <div>Error: {errorMsg}</div>;
-  }
-
   return null;
 }
+
+
