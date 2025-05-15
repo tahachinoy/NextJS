@@ -21,15 +21,15 @@ export const cognitoClient = new CognitoIdentityProviderClient({
 //     : "http://localhost:3000/callback"; // For local development
 // };
 
-export function getRedirectUri() {
-  if (process.env.NODE_ENV === "production") {
-    // In production, use the Vercel URL
-    return `https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/callback`;
-  } else {
-    // In development, use localhost
-    return "http://localhost:3000/callback";
-  }
-}
+// export function getRedirectUri() {
+//   if (process.env.NODE_ENV === "production") {
+//     // In production, use the Vercel URL
+//     return `https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/callback`;
+//   } else {
+//     // In development, use localhost
+//     return "http://localhost:3000/callback";
+//   }
+// }
 
 
 export async function signUp(username: string, password: string, email: string) {
@@ -92,7 +92,8 @@ export async function signOut(accessToken: string) {
 export async function exchangeAuthCode(code: string) {
   // const redirectUri = "http://localhost:3000/callback";
 
-  const redirectUri = getRedirectUri(); 
+  // const redirectUri = getRedirectUri();
+  const redirectUri = "https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/callback"; 
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     client_id: CLIENT_ID,
