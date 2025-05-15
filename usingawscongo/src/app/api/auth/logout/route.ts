@@ -67,7 +67,7 @@ import { signOut } from "@/lib/cognito";
 
 export async function GET() {
   const cookieStore = cookies();
-  const token = cookieStore.get("accessToken")?.value;
+  const token = (await cookieStore).get("accessToken")?.value;
 
   const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN!;
   const region = process.env.NEXT_PUBLIC_COGNITO_REGION!;
