@@ -75,9 +75,12 @@ export async function GET() {
   const region = process.env.NEXT_PUBLIC_COGNITO_REGION!;
   const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
   // const redirectUri = "http://localhost:3000/";
-  const redirectUri = process.env.NODE_ENV === 'production'
-  ? `https://${process.env.VERCEL_URL}/`  // Vercel domain for production
-  : "http://localhost:3000/"; 
+  // const redirectUri = process.env.NODE_ENV === 'production'
+  // ? `https://https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/`  // Vercel domain for production
+  // : "http://localhost:3000/"; 
+
+  const redirectUri ="https://https://awscognitogoogleandmicrosft-d0irrd7m4-tahachinoys-projects.vercel.app/"
+
 
   if (!token) {
     const res = NextResponse.redirect(redirectUri);
